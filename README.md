@@ -1,50 +1,199 @@
-# Welcome to your Expo app 👋
+````md
+# 📦Helpers Usage Guide  
+(Axios · Storage · DB)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Simple, Laravel-like helpers for your app.
 
-## Get started
+---
 
-1. Install dependencies
+## 🌐 AXIOS HELPER
 
-   ```bash
-   npm install
-   ```
+### Without token
+```ts
+import { api } from "@/lib/http/axios";
 
-2. Start the app
+const res = await api.get("/users");
+const res2 = await api.post("/login", { email, password });
+````
 
-   ```bash
-   npx expo start
-   ```
+### With token
 
-In the output, you'll find options to open the app in a
+```ts
+import { apiWithToken } from "@/lib/http/axios";
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+const res = await apiWithToken.get("/profile");
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+### All HTTP methods
 
-To learn more about developing your project with Expo, look at the following resources:
+#### GET
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```ts
+api.get("/posts");
+apiWithToken.get("/posts");
+```
 
-## Join the community
+#### POST
 
-Join our community of developers creating universal apps.
+```ts
+api.post("/posts", { title: "Hi" });
+apiWithToken.post("/posts", { title: "Hi" });
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+#### PUT
+
+```ts
+apiWithToken.put("/posts/1", { title: "Updated" });
+```
+
+#### PATCH
+
+```ts
+apiWithToken.patch("/posts/1", { title: "Small change" });
+```
+
+#### DELETE
+
+```ts
+apiWithToken.delete("/posts/1");
+```
+
+---
+
+## 💾 STORAGE HELPER
+
+### Save data
+
+```ts
+await Storage.set("token", "my_secret_token");
+```
+
+### Get data
+
+```ts
+const token = await Storage.get<string>("token");
+```
+
+### Update data
+
+```ts
+await Storage.set("token", "new_token");
+```
+
+### Remove data
+
+```ts
+await Storage.remove("token");
+```
+
+### Example flow
+
+```ts
+await Storage.set("token", "abc");
+const token = await Storage.get("token"); // "abc"
+await Storage.remove("token");
+```
+
+---
+
+## 🗄️ DB HELPER (Drizzle)
+
+### Run migrations
+
+```ts
+await runMigrations();
+```
+
+---
+
+### Get all rows
+
+```ts
+const users = await getAll(usersTable);
+```
+
+### Get one row
+
+```ts
+const user = await getById(usersTable, eq(usersTable.id, 1));
+```
+
+### Insert
+
+```ts
+await addToTable(usersTable, {
+  name: "John",
+  email: "john@mail.com",
+});
+```
+
+### Update
+
+```ts
+await updateTable(
+  usersTable,
+  { name: "New Name" },
+  eq(usersTable.id, 1)
+);
+```
+
+### Delete
+
+```ts
+await deleteFromTable(
+  usersTable,
+  eq(usersTable.id, 1)
+);
+```
+
+### Filter & order
+
+```ts
+const users = await getFiltered(
+  usersTable,
+  eq(usersTable.role, "student"),
+  desc(usersTable.createdAt)
+);
+```
+
+---
+
+## 🧪 DB DEBUG
+
+### Count rows
+
+```ts
+const count = await getRowCount(usersTable);
+```
+
+### Clear table
+
+```ts
+await clearTable(usersTable);
+```
+
+### List tables
+
+```ts
+const tables = await listAllTables();
+```
+
+### Raw SQL
+
+```ts
+await execRaw("DELETE FROM users");
+```
+
+---
+
+## 🧠 Simple mental model
+
+* **Axios** → talk to server
+* **Storage** → save small data (token, settings)
+* **DB** → local app data
+
+
+```
+```
