@@ -10,7 +10,7 @@ Simple, Laravel-like helpers for your app.
 
 ### Without token
 ```ts
-import { api } from "@/lib/http/axios";
+import { api } from "@/lib/axios";
 
 const res = await api.get("/users");
 const res2 = await api.post("/login", { email, password });
