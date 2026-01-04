@@ -65,7 +65,9 @@ apiWithToken.delete("/posts/1");
 ## 💾 STORAGE HELPER
 
 ### Save data
-
+```ts
+import Storage from "@/lib/storage";
+```
 ```ts
 await Storage.set("token", "my_secret_token");
 ```
@@ -100,6 +102,9 @@ await Storage.remove("token");
 
 ## 🗄️ DB HELPER (Drizzle)
 
+```ts
+import { * } from "@/lib/db/dbhelper";
+```
 ### Run migrations
 
 ```ts
